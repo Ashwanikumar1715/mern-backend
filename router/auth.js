@@ -8,9 +8,9 @@ const bcrypt = require('bcrypt')
 const authentication=require('../middleware/authentication')
 
 
-//databse connectivity
+//databse connectivity userSchema
 require('../db/conn');
-const User = require('../models/userSchema');
+const User = require('../models/UserSchema');
 
 
 //to store cookies 

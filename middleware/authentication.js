@@ -1,5 +1,5 @@
 const jwt=require('jsonwebtoken');
-const user=require('../models/userSchema')
+const user=require('../models/UserSchema')
 
 
 
