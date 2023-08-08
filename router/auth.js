@@ -5,12 +5,12 @@ const bcrypt = require('bcrypt')
 
 //middleware requiring 
 
-const authentication=require('../middleware/authentication')
+const authentication = require('../middleware/authentication')
 
 
 //databse connectivity
 require('../db/conn');
-const User = require('../models/userSchema');
+const User = require('./models/UserSchema');
 
 
 //to store cookies 
@@ -62,12 +62,12 @@ router.post('/signin', async (req, res) => {
 
         if (userLogin) {
             const isMatch = await bcrypt.compare(password, userLogin.password);
-           const token=await userLogin.generateAuthToken();
-        //  console.log(token);
-        res.cookie("jwtoken",token,{
-            expires: new Date(Date.now()+25892000000),
-            httpOnly:true
-        })
+            const token = await userLogin.generateAuthToken();
+            //  console.log(token);
+            res.cookie("jwtoken", token, {
+                expires: new Date(Date.now() + 25892000000),
+                httpOnly: true
+            })
             if (!isMatch) {
                 res.status(400).json({ message: " Invalid credentials" });
             }
@@ -83,29 +83,29 @@ router.post('/signin', async (req, res) => {
     }
 })
 
-router.get('/about', authentication ,(req,res)=>{
-    
+router.get('/about', authentication, (req, res) => {
+
     res.send(req.rootuser);
 })
-router.get('/userdata', authentication ,(req,res)=>{
-    
+router.get('/userdata', authentication, (req, res) => {
+
     res.send(req.rootuser);
 })
 
-router.post('/contact',authentication,async(req,res)=>{
+router.post('/contact', authentication, async (req, res) => {
     try {
-        const {name,email,message}=req.body;
+        const { name, email, message } = req.body;
 
-        if(!name|| !email || !message){
-            return res.json({error:"plz fill th form"});
+        if (!name || !email || !message) {
+            return res.json({ error: "plz fill th form" });
         }
-        const usercontact=await User.findOne({_id:req.userId});
+        const usercontact = await User.findOne({ _id: req.userId });
 
 
-        if(usercontact){
-         const usermessage= await usercontact.addmessage(name,email,message);
-         await usercontact.save();
-         res.status(201).json({message:"success"});
+        if (usercontact) {
+            const usermessage = await usercontact.addmessage(name, email, message);
+            await usercontact.save();
+            res.status(201).json({ message: "success" });
         }
 
     } catch (err) {
@@ -114,9 +114,9 @@ router.post('/contact',authentication,async(req,res)=>{
 })
 
 
-router.get('/logout', (req,res)=>{
+router.get('/logout', (req, res) => {
     console.log("logout ko mera hello");
-    res.clearCookie('jwtoken',{path:'/'});
+    res.clearCookie('jwtoken', { path: '/' });
     res.status(200).send("user logout");
 })
 
