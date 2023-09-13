@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt')
+import cors  = require("cors");
 
 
 //middleware requiring 
@@ -17,6 +18,10 @@ const User = require('../models/UserSchema');
 const cookies = require('cookie-parser');
 router.use(cookies());
 
+router.use(cors({
+    "Origin":"https://mern-app-first.onrender.com",
+    "Method":["POST","GET","UPDATE","DELETE"]
+}))
 //router in use
 router.get('/', (req, res) => {
     res.send("hello this is home page using the router");
